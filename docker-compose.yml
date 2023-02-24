@@ -1,0 +1,27 @@
+version: '3.1'
+services:
+  web:
+
+    image: odoo:14.0
+    depends_on:
+      - mydb
+    ports:
+      - "8069:8069"
+    environment:
+      - HOST=mydb
+      - USER=odoo
+      - PASSWORD=odoo
+  mydb:
+    container_name: dam_odoo2
+    image: postgres:13
+    #hay que parar postgres local con el comando sc stop postgresql-x64-15 en administrador
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    ports:
+      - "5432:5432"
+    volumes:
+      - odoopostgresql:/var/lib/postgresql/data  #directorio del contenedor donde guardar el volumen
+volumes:
+  odoopostgresql:
